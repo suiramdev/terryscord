@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./sqlite.db"
+}
+
+model CaptchaSetup {
+  id        String @id @default(uuid())
+  guildId   String @unique
+  channelId String
+  roleId    String
+}
+
+model CaptchaCode {
+  memberId  String @id
+  guildId   String @unique
+  messageId String
+  code      String
+}
+
+model FeedSubscription {
+  id         String   @id @default(uuid())
+  guildId    String   @unique
+  channelId  String   @unique
+  feedUrl    String   @unique
+  lastUpdate DateTime @default(now())
+}
+
+model RolePicker {
+  id      String @id @default(uuid())
+  name    String @unique
+  guildId String @unique
+  Roles   Role[]
+}
+
+model Role {
+  id          String       @id
+  RolePickers RolePicker[]
+}
