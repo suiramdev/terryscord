@@ -14,11 +14,11 @@ export const event: Event = {
             logger.debug(`Command ${command.name} called by ${interaction.user.tag} (${interaction.user.id})`);
             await interaction.deferReply();
             await command.callback(client, interaction);
-            if (interaction.deferred) await interaction.deleteReply();
         } catch (error) {
             if (!interaction.deferred) await interaction.deferReply();
             await interaction.followUp({
                 embeds: [errorEmbed("An error occurred")],
+                ephemeral: true,
             });
             logger.error(error);
         }
