@@ -57,14 +57,7 @@ export const command: Command = {
 
         switch (interaction.options.getSubcommand()) {
             case "subscribe":
-                await client.prisma.feedSubscription.create({
-                    data: {
-                        feedUrl: interaction.options.getString("url", true),
-                        guildId: interaction.guildId!,
-                        channelId: interaction.options.getChannel("channel", true).id,
-                    },
-                });
-                if (!existingSubscription) {
+                if (existingSubscription) {
                     await interaction.followUp({
                         embeds: [errorEmbed("This channel is already subscribed to the feed.")],
                         ephemeral: true,
@@ -73,15 +66,23 @@ export const command: Command = {
                     return;
                 }
 
+                await client.prisma.feedSubscription.create({
+                    data: {
+                        feedUrl: interaction.options.getString("url", true),
+                        guildId: interaction.guildId!,
+                        channelId: interaction.options.getChannel("channel", true).id,
+                    },
+                });
+
                 await interaction.followUp({
                     embeds: [successEmbed("Successfully subscribed the channel to the feed.")],
                     ephemeral: true,
                 });
                 break;
             case "unsubscribe":
-                if (existingSubscription) {
+                if (!existingSubscription) {
                     await interaction.followUp({
-                        embeds: [errorEmbed("This channel is already subscribed to the feed.")],
+                        embeds: [errorEmbed("This channel is not subscribed to the feed.")],
                         ephemeral: true,
                     });
 
