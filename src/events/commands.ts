@@ -8,19 +8,16 @@ export const event: Event = {
     name: Events.InteractionCreate,
     async callback(client, interaction: Interaction) {
         if (!interaction.isChatInputCommand()) return;
-        try {
-            const command = client.commands.get(interaction.commandName);
-            if (!command) return;
-            logger.debug(`Command ${command.name} called by ${interaction.user.tag} (${interaction.user.id})`);
-            await interaction.deferReply();
-            await command.callback(client, interaction);
-        } catch (error) {
-            if (!interaction.deferred) await interaction.deferReply();
-            await interaction.followUp({
+        const command = client.commands.get(interaction.commandName);
+        if (!command) return;
+        await interaction.deferReply({ ephemeral: true });
+        logger.debug(`Command ${command.name} called by ${interaction.user.tag} (${interaction.user.id})`);
+        command.callback(client, interaction).catch((error) => {
+            logger.error(error);
+            interaction.followUp({
                 embeds: [errorEmbed("An error occurred")],
                 ephemeral: true,
             });
-            logger.error(error);
-        }
+        });
     },
 };
