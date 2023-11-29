@@ -41,10 +41,14 @@ async function rssLookup(client: Client) {
 
             await client.prisma.feedSubscription.update({
                 where: {
-                    id: feedSubscription.id,
+                    unique_feed_subscription: {
+                        guildId: feedSubscription.guildId,
+                        channelId: feedSubscription.channelId,
+                        feedUrl: feedSubscription.feedUrl,
+                    },
                 },
                 data: {
-                    lastUpdate: new Date().toISOString(),
+                    lastUpdate: new Date(),
                 },
             });
         }

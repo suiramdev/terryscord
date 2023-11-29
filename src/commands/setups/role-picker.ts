@@ -85,8 +85,10 @@ export const command: Command = {
     async callback(client, interaction) {
         const existingRolePicker = await client.prisma.rolePicker.findUnique({
             where: {
-                name: interaction.options.getString("id")!,
-                guildId: interaction.guildId!,
+                unique_role_picker: {
+                    name: interaction.options.getString("id", true),
+                    guildId: interaction.guildId!,
+                },
             },
             include: {
                 Roles: true,
@@ -151,7 +153,10 @@ export const command: Command = {
             case "add":
                 await client.prisma.rolePicker.update({
                     where: {
-                        name: interaction.options.getString("id", true),
+                        unique_role_picker: {
+                            name: interaction.options.getString("id", true),
+                            guildId: interaction.guildId!,
+                        },
                     },
                     data: {
                         Roles: {
@@ -175,7 +180,10 @@ export const command: Command = {
             case "remove":
                 await client.prisma.rolePicker.update({
                     where: {
-                        name: interaction.options.getString("id", true),
+                        unique_role_picker: {
+                            name: interaction.options.getString("id", true),
+                            guildId: interaction.guildId!,
+                        },
                     },
                     data: {
                         Roles: {

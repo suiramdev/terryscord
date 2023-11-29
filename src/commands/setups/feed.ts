@@ -49,9 +49,11 @@ export const command: Command = {
     async callback(client, interaction) {
         const existingSubscription = await client.prisma.feedSubscription.findUnique({
             where: {
-                guildId: interaction.guildId!,
-                channelId: interaction.options.getChannel("channel", true).id,
-                feedUrl: interaction.options.getString("url", true),
+                unique_feed_subscription: {
+                    guildId: interaction.guildId!,
+                    channelId: interaction.options.getChannel("channel", true).id,
+                    feedUrl: interaction.options.getString("url", true),
+                },
             },
         });
 
@@ -91,9 +93,11 @@ export const command: Command = {
 
                 await client.prisma.feedSubscription.delete({
                     where: {
-                        guildId: interaction.guildId!,
-                        channelId: interaction.options.getChannel("channel", true).id,
-                        feedUrl: interaction.options.getString("url", true),
+                        unique_feed_subscription: {
+                            guildId: interaction.guildId!,
+                            channelId: interaction.options.getChannel("channel", true).id,
+                            feedUrl: interaction.options.getString("url", true),
+                        },
                     },
                 });
 

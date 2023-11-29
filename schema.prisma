@@ -15,25 +15,30 @@ model CaptchaSetup {
 }
 
 model CaptchaCode {
-  memberId  String @id
-  guildId   String @unique
+  memberId  String
+  guildId   String
   messageId String
   code      String
+
+  @@unique([memberId, guildId], name: "unique_captcha_code")
 }
 
 model FeedSubscription {
-  id         String   @id @default(uuid())
-  guildId    String   @unique
-  channelId  String   @unique
-  feedUrl    String   @unique
+  guildId    String
+  channelId  String
+  feedUrl    String
   lastUpdate DateTime @default(now())
+
+  @@unique([guildId, channelId, feedUrl], name: "unique_feed_subscription")
 }
 
 model RolePicker {
   id      String @id @default(uuid())
-  name    String @unique
-  guildId String @unique
+  name    String
+  guildId String
   Roles   Role[]
+
+  @@unique([name, guildId], name: "unique_role_picker")
 }
 
 model Role {

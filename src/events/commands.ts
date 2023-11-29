@@ -12,7 +12,7 @@ export const event: Event = {
         if (!command) return;
         await interaction.deferReply({ ephemeral: true });
         logger.debug(`Command ${command.name} called by ${interaction.user.tag} (${interaction.user.id})`);
-        command.callback(client, interaction).catch((error) => {
+        command.callback(client, interaction).catch((error: Error) => {
             logger.error(error);
             interaction.followUp({
                 embeds: [errorEmbed("An error occurred")],

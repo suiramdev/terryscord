@@ -1,7 +1,5 @@
 import path from "node:path";
 import type { Command } from "@/commands/index.js";
-// @ts-ignore - This package is not typed unfortunately
-import { Captcha } from "discord.js-captcha";
 import { Client as DiscordClient, type ClientOptions, Collection, Events } from "discord.js";
 import { PrismaClient } from "@prisma/client";
 import { logger } from "@/utils/log.js";

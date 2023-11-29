@@ -40,8 +40,10 @@ export const event: Event = {
 
         await client.prisma.captchaCode.upsert({
             where: {
-                memberId: member.id,
-                guildId: member.guild.id,
+                unique_captcha_code: {
+                    memberId: member.id,
+                    guildId: member.guild.id,
+                },
             },
             create: {
                 memberId: member.id,

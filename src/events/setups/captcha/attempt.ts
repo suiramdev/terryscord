@@ -16,8 +16,10 @@ export const event: Event = {
 
         const captchaCode = await client.prisma.captchaCode.findUnique({
             where: {
-                memberId: message.author.id,
-                guildId: message.guild!.id,
+                unique_captcha_code: {
+                    memberId: message.author.id,
+                    guildId: message.guild!.id,
+                },
             },
         });
         if (!captchaCode) return;
